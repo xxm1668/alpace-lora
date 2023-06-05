@@ -1,0 +1,28 @@
+python3 merge_llama_with_chinese_lora.py \
+    --base_model /home/xxm/model/llama-7b-hf-transformers-4.29 \
+    --lora_model /home/xxm/model/chinese-alpaca-lora-7b \
+    --output_type huggingface \
+    --output_dir /home/xxm/model/chinese-alpaca-7b
+
+
+python3 finetune.py \
+    --base_model /home/xxm/model/chinese-alpaca-7b \
+    --data_path /home/xxm/下载/alpaca-lora/dataset/estate/estate_qa.json \
+    --output_dir ./lora-alpaca \
+    --batch_size 4 \
+    --micro_batch_size 4 \
+    --num_epochs 3 \
+    --learning_rate 1e-4 \
+    --cutoff_len 1000 \
+    --val_set_size 200 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --lora_target_modules '[q_proj,v_proj]' \
+    --train_on_inputs \
+    --group_by_length
+
+python generate.py \
+    --load_8bit \
+    --base_model /home/xxm/model/chinese-alpaca-7b \
+    --lora_weights /home/xxm/下载/alpaca-lora/lora-alpaca
