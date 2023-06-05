@@ -55,16 +55,16 @@ python finetune.py \
 We can also tweak our hyperparameters:
 
 ```bash
-python finetune.py \
-    --base_model 'decapoda-research/llama-7b-hf' \
-    --data_path 'yahma/alpaca-cleaned' \
-    --output_dir './lora-alpaca' \
-    --batch_size 128 \
+python3 finetune.py \
+    --base_model /home/xxm/model/chinese-alpaca-7b \
+    --data_path /home/xxm/下载/alpaca-lora/dataset/estate/estate_qa.json \
+    --output_dir ./lora-alpaca \
+    --batch_size 8 \
     --micro_batch_size 4 \
     --num_epochs 3 \
     --learning_rate 1e-4 \
-    --cutoff_len 512 \
-    --val_set_size 2000 \
+    --cutoff_len 1000 \
+    --val_set_size 200 \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
@@ -80,11 +80,13 @@ This file reads the foundation model from the Hugging Face model hub and the LoR
 Example usage:
 
 ```bash
-python generate.py \
+python3 generate.py \
     --load_8bit \
-    --base_model 'decapoda-research/llama-7b-hf' \
-    --lora_weights 'tloen/alpaca-lora-7b'
+    --base_model /home/xxm/model/chinese-alpaca-7b \
+    --lora_weights /home/xxm/下载/alpaca-lora/lora-alpaca
 ```
+
+通过localhost:7860打开界面
 
 ### Official weights
 
