@@ -143,8 +143,21 @@ def train(
         return result
 
     def generate_and_tokenize_prompt(data_point):
+        prompt = ''
+        if data_point["instruction"] and data_point["output"]:
+            query, answer = data_point["instruction"], data_point["output"]
+            if data_point["input"]:
+                query += data_point["input"]
+            if data_point["history"]:
+                prompt = ""
+                history = data_point["history"]
+                for j, (old_query, response) in enumerate(history):
+                    prompt += "[Round {}]\nInstruction：{}\nResponse：{}\n".format(j, old_query, response)
+                prompt += "[Round {}]\nInstruction：{}\nResponse：".format(len(history), query)
+            else:
+                prompt = query
         full_prompt = prompter.generate_prompt(
-            data_point["instruction"],
+            prompt,
             data_point["input"],
             data_point["output"],
         )
